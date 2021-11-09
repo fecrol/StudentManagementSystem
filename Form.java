@@ -26,7 +26,7 @@ public class Form extends JPanel implements ActionListener {
     private SaveButton saveButton;
     private DeleteButton deleteButton;
 
-    public Form(int width, int height) {
+    public Form(int width, int height, Students students, Table table) {
         this.width = width / 3;
         this.height = height;
         this.containerHeight = 120;
@@ -41,6 +41,7 @@ public class Form extends JPanel implements ActionListener {
 
         this.id = new JLabel("ID");
         this.idText = new JTextField();
+        this.setUpIdTextField();
 
         this.forename = new JLabel("Forename");
         this.forenameText = new JTextField();
@@ -51,7 +52,7 @@ public class Form extends JPanel implements ActionListener {
         this.age = new JLabel("Age");
         this.ageText = new JTextField();
 
-        this.addButton = new AddButton("ADD");
+        this.addButton = new AddButton("ADD", this.students);
         this.addButton.addActionListener(this);
 
         this.editButton = new EditButton("EDIT");
@@ -78,8 +79,101 @@ public class Form extends JPanel implements ActionListener {
         this.add(this.deleteButton);
     }
 
+    private void setUpIdTextField() {
+        // Suggests an ID number based on the ID of the last added student
+
+        if (this.students.getStudents().size() > 0) {
+            this.idText.setText(Integer.toString(this.students.getStudents().get(this.students.getStudents().size() - 1).getId() + 1));
+        }
+        else {
+            this.idText.setText("1");
+        }
+        this.idText.setCaretPosition(this.idText.getText().length());
+    }
+
+    private boolean validateForm(String id, String forename, String surname, String age) {
+        // Checks if the form has all the correct information to avoid errors
+
+        boolean isValid = true;
+
+        if (id.trim().equals("") || id.trim().equals(" ") || !this.isNumber(id)) {
+            isValid = false;
+        }
+        if (forename.trim().equals("") || forename.trim().equals(" ")) {
+            isValid = false;
+        }
+        if (surname.trim().equals("") || surname.trim().equals(" ")) {
+            isValid = false;
+        }
+        if (age.trim().equals("") || age.trim().equals(" ") || !this.isNumber(age)) {
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    private boolean isNumber(String input) {
+        // Checks if the passed input is a number to validate id and age
+
+        try {
+            Integer.parseInt(input);
+            return true;
+        }
+        catch (Exception e) {
+            return false;
+        }
+    }
+
+    private boolean checkIdExists(int id) {
+        // BUG TO FIX!
+        // Checks if another student already has the given id number to maintain unique id numbers for each student
+
+        try {
+            for (Student student : this.students.getStudents()) {
+                if (student.getId() == id) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        catch (Exception e) {
+            return true;
+        }
+    }
+
+    private void emptyForm() {
+        // Empties the form to make form more user-friendly
+
+        this.idText.setText("");
+        this.forenameText.setText("");
+        this.surnameText.setText("");
+        this.ageText.setText("");
+
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == this.addButton) {
+            String id = this.idText.getText();
+            String forename = this.forenameText.getText();
+            String surname = this.surnameText.getText();
+            String age = this.ageText.getText();
 
+            boolean formIsValid = this.validateForm(id, forename, surname, age);
+            boolean idExists = this.checkIdExists(Integer.parseInt(id));
+
+            if (formIsValid && !idExists) {
+                this.addButton.addStudent(id, forename, surname, age);
+                this.emptyForm();
+                this.table.addRow(id, forename, surname, age);
+                JOptionPane.showMessageDialog(null, "Student added successfully", "Success", JOptionPane.PLAIN_MESSAGE);
+            }
+            else if (idExists) {
+                JOptionPane.showMessageDialog(null, "ID Already Exists", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Form Invalid!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 }

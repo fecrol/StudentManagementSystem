@@ -13,11 +13,14 @@ public class Main {
         int width = frame.getWidth();
         int height = frame.getHeight();
 
+        JPanel panel = new JPanel();
+
         Table table = new Table(width, height, students);
         Form form = new Form(width, height, students, table);
 
-        frame.add(form, BorderLayout.WEST);
-        frame.add(table, BorderLayout.EAST);
+        panel.add(form, BorderLayout.WEST);
+        panel.add(table, BorderLayout.EAST);
+        frame.add(panel);
 
         frame.setVisible(true);
     }

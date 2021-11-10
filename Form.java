@@ -159,8 +159,7 @@ public class Form extends JPanel implements ActionListener {
                 boolean idExists = this.checkIdExists(Integer.parseInt(id));
 
                 if (!idExists) {
-                    this.addButton.addStudent(id, forename, surname, age);
-                    this.table.addRow(id, forename, surname, age);
+                    this.addButton.addStudent(this.table, id, forename, surname, age);
                     this.emptyForm();
                     this.setUpIdTextField();
                     JOptionPane.showMessageDialog(null, "Student added successfully", "Success", JOptionPane.PLAIN_MESSAGE);
@@ -177,7 +176,7 @@ public class Form extends JPanel implements ActionListener {
             this.saveButton.saveData(this.students);
         }
         if (e.getSource() == this.editButton) {
-
+            this.editButton.edit(this.table.getTable(), this.students, this.idText, this.forenameText, this.surnameText, this.ageText);
         }
         if (e.getSource() == this.deleteButton) {
             this.deleteButton.delete(this.table.getTable(), this.students);

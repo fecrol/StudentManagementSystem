@@ -23,6 +23,14 @@ public class Students {
         this.students.add(student);
     }
 
+    public void addStudent(int index, Student student) {
+        /*
+        Adds a student object to the list of students at specified index
+         */
+
+        this.students.add(index, student);
+    }
+
     public ArrayList<Student> getStudents() {
         return this.students;
     }

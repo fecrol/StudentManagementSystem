@@ -14,26 +14,21 @@ public class SaveButton extends Button {
     public void saveData(Students students) {
         // Saves data to the students.txt file to keep a record of students
 
-        if (students.getStudents().size() > 0) {
-            File file = new File("students.txt");
+        File file = new File("students.txt");
 
-            try {
-                FileWriter fw = new FileWriter(file);
-                BufferedWriter bw = new BufferedWriter(fw);
+        try {
+            FileWriter fw = new FileWriter(file);
+            BufferedWriter bw = new BufferedWriter(fw);
 
-                for (Student student : students.getStudents()) {
-                    bw.write(student.toString());
-                    bw.newLine();
-                }
-                bw.close();
-                JOptionPane.showMessageDialog(null, "Data saved successfully", "Success", JOptionPane.PLAIN_MESSAGE);
+            for (Student student : students.getStudents()) {
+                bw.write(student.toString());
+                bw.newLine();
             }
-            catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Error saving file", "Error", JOptionPane.ERROR_MESSAGE);
-            }
+            bw.close();
+            JOptionPane.showMessageDialog(null, "Data saved successfully", "Success", JOptionPane.PLAIN_MESSAGE);
         }
-        else {
-            JOptionPane.showMessageDialog(null, "Error, no data to save", "Error", JOptionPane.ERROR_MESSAGE);
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error saving file", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

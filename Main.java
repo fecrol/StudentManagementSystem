@@ -1,5 +1,6 @@
 package com.studentManagementSystem;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class Main {
@@ -7,7 +8,6 @@ public class Main {
     public static void main(String[] args) {
 
         Students students = new Students();
-        // students.addStudent(new Student(1, "Maciej", "Fec", 25));
 
         MyFrame frame = new MyFrame();
         int width = frame.getWidth();

@@ -125,20 +125,14 @@ public class Form extends JPanel implements ActionListener {
     }
 
     private boolean checkIdExists(int id) {
-        // BUG TO FIX!
         // Checks if another student already has the given id number to maintain unique id numbers for each student
 
-        try {
-            for (Student student : this.students.getStudents()) {
-                if (student.getId() == id) {
-                    return true;
-                }
+        for (Student student : this.students.getStudents()) {
+            if (student.getId() == id) {
+                return true;
             }
-            return false;
         }
-        catch (Exception e) {
-            return true;
-        }
+        return false;
     }
 
     private void emptyForm() {
@@ -160,20 +154,34 @@ public class Form extends JPanel implements ActionListener {
             String age = this.ageText.getText();
 
             boolean formIsValid = this.validateForm(id, forename, surname, age);
-            boolean idExists = this.checkIdExists(Integer.parseInt(id));
 
-            if (formIsValid && !idExists) {
-                this.addButton.addStudent(id, forename, surname, age);
-                this.emptyForm();
-                this.table.addRow(id, forename, surname, age);
-                JOptionPane.showMessageDialog(null, "Student added successfully", "Success", JOptionPane.PLAIN_MESSAGE);
-            }
-            else if (idExists) {
-                JOptionPane.showMessageDialog(null, "ID Already Exists", "Error", JOptionPane.ERROR_MESSAGE);
+            if (formIsValid) {
+                boolean idExists = this.checkIdExists(Integer.parseInt(id));
+
+                if (!idExists) {
+                    this.addButton.addStudent(id, forename, surname, age);
+                    this.table.addRow(id, forename, surname, age);
+                    this.emptyForm();
+                    this.setUpIdTextField();
+                    JOptionPane.showMessageDialog(null, "Student added successfully", "Success", JOptionPane.PLAIN_MESSAGE);
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, "ID Already Exists", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
             else {
                 JOptionPane.showMessageDialog(null, "Form Invalid!", "Error", JOptionPane.ERROR_MESSAGE);
             }
+        }
+        if (e.getSource() == this.saveButton) {
+            this.saveButton.saveData(this.students);
+        }
+        if (e.getSource() == this.editButton) {
+
+        }
+        if (e.getSource() == this.deleteButton) {
+            this.deleteButton.delete(this.table.getTable(), this.students);
+            this.setUpIdTextField();
         }
     }
 }

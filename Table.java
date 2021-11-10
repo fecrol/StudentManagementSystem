@@ -51,6 +51,11 @@ public class Table extends JPanel {
         this.tableModel.addRow(data);
     }
 
+    public void insertRow(int index, String id, String forename, String surname, String age) {
+        Object[] data = {id, forename, surname, age};
+        this.tableModel.insertRow(index, data);
+    }
+
     public JTable getTable() {
         return table;
     }

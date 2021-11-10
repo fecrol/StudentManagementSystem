@@ -19,12 +19,16 @@ public class Table extends JPanel {
         this.students = students;
 
         this.setLayout(new FlowLayout());
-        this.table = new JTable();
+        this.table = new JTable() {
+            @Override // Overrides the method to make a cell selectable but not editable
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         this.tableModel = (DefaultTableModel) table.getModel();
         this.tableModel.setColumnIdentifiers(this.columns);
         this.table.setPreferredScrollableViewportSize(new Dimension(this.width - 40, this.height));
         this.table.setFillsViewportHeight(true);
-        this.table.setEnabled(false);
 
         this.loadData();
 
@@ -45,5 +49,9 @@ public class Table extends JPanel {
 
         Object[] data = {id, forename, surname, age};
         this.tableModel.addRow(data);
+    }
+
+    public JTable getTable() {
+        return table;
     }
 }

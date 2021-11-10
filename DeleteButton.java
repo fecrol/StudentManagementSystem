@@ -13,7 +13,7 @@ public class DeleteButton extends Button {
 
         int row = table.getSelectedRow();
         if (row > -1) {
-            int result = JOptionPane.showConfirmDialog(null,"Sure? You want to exit?", "Swing Tester", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            int result = JOptionPane.showConfirmDialog(null,"Are you sure you want to delete?", "Delete", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (result == 0) {
                 ((DefaultTableModel)table.getModel()).removeRow(row);
                 students.getStudents().remove(row);
